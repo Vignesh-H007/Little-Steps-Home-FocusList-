@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Little Steps Home — Narrative Task Sanctuary</title>
+  <title>FocusList - Task Sanctuary</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Nunito (Cozy, legible) -->
+  <!-- Google Fonts: Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -21,27 +21,9 @@
             sans: ['Nunito', 'sans-serif'],
           },
           colors: {
-            twilight: {
-              900: '#182232',
-              800: '#233044',
-              700: '#2f415b',
-            },
-            parchment: {
-              50: '#faf8f5',
-              100: '#f4ede4',
-              200: '#e8dcce',
-              300: '#d7c4b0',
-            },
-            lantern: {
-              DEFAULT: '#f59e0b',
-              glow: '#fbbf24',
-              dim: '#78531b',
-            },
-            moss: {
-              DEFAULT: '#4d7c5f',
-              light: '#6d9e80',
-              dark: '#2d4d38',
-            }
+            twilight: { 900: '#182232', 800: '#233044' },
+            parchment: { 50: '#faf8f5', 100: '#f4ede4', 200: '#e8dcce', 300: '#d7c4b0' },
+            moss: { DEFAULT: '#4d7c5f', dark: '#2d4d38' }
           }
         }
       }
@@ -49,174 +31,154 @@
   </script>
 
   <style>
-    /* Atmospheric Fog Overlay */
     .fog-layer {
       background: radial-gradient(circle at 50% 50%, rgba(240, 244, 248, 0.05) 0%, rgba(203, 213, 225, 0.35) 75%, rgba(148, 163, 184, 0.65) 100%);
-      backdrop-filter: blur(1.5px);
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    /* Subtle Canvas Vignette */
-    .canvas-vignette {
-      box-shadow: inset 0 0 60px rgba(15, 23, 42, 0.4);
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
+      backdrop-filter: blur(1px);
+      transition: opacity 0.5s ease;
     }
   </style>
 </head>
 <body class="bg-parchment-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-moss selection:text-white">
 
-  <!-- TOP STATUS BAR (RESPONSIVE) -->
-  <header class="bg-white/90 backdrop-blur border-b border-parchment-200 px-4 py-3 sticky top-0 z-30 flex flex-col md:flex-row md:items-center md:justify-between gap-3 shadow-xs">
-    
-    <!-- Brand / Title -->
+  <!-- TOP STATUS BAR -->
+  <header class="bg-white/95 backdrop-blur border-b border-parchment-200 px-4 py-3 sticky top-0 z-20 flex flex-col md:flex-row md:items-center md:justify-between gap-3 shadow-xs">
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 rounded-full bg-moss/15 text-moss flex items-center justify-center border border-moss/20 flex-shrink-0">
         <i data-lucide="compass" class="w-5 h-5"></i>
       </div>
-      <div class="min-w-0">
-        <h1 class="text-base md:text-lg font-bold text-slate-900 leading-tight truncate">Little Steps Home</h1>
-        <p class="text-[11px] md:text-xs text-slate-500 font-medium truncate">Guide the wanderer through the shifting biomes</p>
+      <div>
+        <h1 class="text-lg font-bold text-slate-900 leading-tight">FocusList</h1>
+        <p class="text-xs text-slate-500 font-medium">Little Steps Home — Guide the wanderer with your daily tasks</p>
       </div>
     </div>
 
-    <!-- Expedition Indicators -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none flex-wrap sm:flex-nowrap">
-      
-      <!-- Lantern Pill -->
-      <div class="flex items-center gap-1.5 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-full text-xs font-semibold text-amber-900 shadow-2xs whitespace-nowrap flex-shrink-0">
+    <!-- Live Indicators -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 flex-wrap sm:flex-nowrap">
+      <div class="flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full text-xs font-semibold text-amber-900 shadow-2xs whitespace-nowrap">
         <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
-        <span>Lantern: <strong id="val-lantern" class="text-amber-700 font-bold">100%</strong></span>
+        <span>Lantern: <strong id="val-lantern" class="text-amber-700">100%</strong></span>
       </div>
-
-      <!-- Steps Pill -->
-      <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full text-xs font-semibold text-emerald-900 shadow-2xs whitespace-nowrap flex-shrink-0">
+      <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full text-xs font-semibold text-emerald-900 shadow-2xs whitespace-nowrap">
         <i data-lucide="footprints" class="w-3.5 h-3.5 text-emerald-600"></i>
-        <span>Steps: <strong id="val-steps" class="text-emerald-700 font-bold">0</strong></span>
+        <span>Steps: <strong id="val-steps" class="text-emerald-700">0</strong></span>
       </div>
-
-      <!-- Journal Button -->
-      <button id="open-journal-btn" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-700 transition whitespace-nowrap flex-shrink-0">
+      <button id="open-journal-btn" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-700 transition whitespace-nowrap">
         <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-600"></i>
         <span>Journal (<span id="val-journal-count">0</span>)</span>
       </button>
-
     </div>
   </header>
 
-  <!-- MAIN SPLIT WORKSPACE (DESKTOP SPLIT / MOBILE STACK) -->
+  <!-- MAIN APPLICATION LAYOUT -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
     
-    <!-- LEFT PANEL: TASK ENGINE & DASHBOARD (7 COLUMNS) -->
+    <!-- LEFT PANEL: TASK ENGINE (7 COLUMNS) -->
     <section class="lg:col-span-7 space-y-5">
 
-      <!-- TASK STATISTICS METRICS (FAIE REQUIREMENT 5) -->
+      <!-- NON-BLOCKING INLINE NARRATIVE BANNER (Replaces blocking modal) -->
+      <div id="narrative-banner" class="bg-amber-50/90 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between gap-3 text-xs text-amber-900">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="heart" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+          <span><strong>Wanderer:</strong> "Add tasks to your list to help me clear the fog and walk home!"</span>
+        </div>
+      </div>
+
+      <!-- TASK STATISTICS (FAIE Requirement 5) -->
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-white p-4 rounded-2xl border border-parchment-200 shadow-sm">
+        <div class="bg-white p-4 rounded-2xl border border-parchment-200 shadow-sm text-center">
           <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Tasks</div>
           <div id="stat-total" class="text-2xl font-extrabold text-slate-800">0</div>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-amber-200/70 shadow-sm">
-          <div class="text-xs font-semibold text-amber-600/90 uppercase tracking-wider mb-1">Pending In Fog</div>
+        <div class="bg-white p-4 rounded-2xl border border-amber-200/70 shadow-sm text-center">
+          <div class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">Pending Tasks</div>
           <div id="stat-pending" class="text-2xl font-extrabold text-amber-600">0</div>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-emerald-200/70 shadow-sm">
-          <div class="text-xs font-semibold text-emerald-600/90 uppercase tracking-wider mb-1">Path Cleared</div>
+        <div class="bg-white p-4 rounded-2xl border border-emerald-200/70 shadow-sm text-center">
+          <div class="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">Completed Tasks</div>
           <div id="stat-completed" class="text-2xl font-extrabold text-emerald-600">0</div>
         </div>
       </div>
 
-      <!-- CREATE TASK SECTION (FAIE REQUIREMENT 1 & 3) -->
-      <div class="bg-white p-5 rounded-2xl border border-parchment-200 shadow-sm space-y-3">
-        <div class="flex items-center justify-between">
-          <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="plus-circle" class="w-4 h-4 text-moss"></i> Carve a Pathway
-          </h2>
-          <span class="text-[11px] text-slate-400 font-medium">Clear milestones grant +25 steps</span>
-        </div>
+      <!-- CREATE TASK FORM (FAIE Requirement 1 & 3) -->
+      <div class="bg-white p-4 md:p-5 rounded-2xl border border-parchment-200 shadow-sm space-y-3">
+        <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-moss"></i> Create New Task
+        </h2>
         <form id="task-form" class="flex flex-col sm:flex-row gap-2.5">
           <input 
             type="text" 
-            id="task-title" 
-            placeholder="What provision or step must be taken today?" 
+            id="task-title-input" 
+            placeholder="What task needs to be completed?" 
             required 
-            class="flex-1 bg-parchment-50 border border-parchment-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-moss/40 focus:border-moss transition"
+            class="flex-1 bg-parchment-50 border border-parchment-300 rounded-xl px-4 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-moss/40"
           />
           <select 
-            id="task-priority" 
-            class="bg-parchment-50 border border-parchment-300 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-moss/40"
+            id="task-priority-select" 
+            class="bg-parchment-50 border border-parchment-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none"
           >
-            <option value="High">High (Milestone)</option>
-            <option value="Medium" selected>Medium (Routine)</option>
-            <option value="Low">Low (Quick Light)</option>
+            <option value="High">High Priority</option>
+            <option value="Medium" selected>Medium Priority</option>
+            <option value="Low">Low Priority</option>
           </select>
           <button 
             type="submit" 
-            class="bg-moss hover:bg-moss-dark text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
+            id="add-task-btn"
+            class="bg-moss hover:bg-moss-dark text-white font-bold px-5 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
           >
-            <i data-lucide="feather" class="w-4 h-4"></i> Commit Step
+            <i data-lucide="plus" class="w-4 h-4"></i> Add Task
           </button>
         </form>
       </div>
 
-      <!-- SEARCH & FILTER TOOLBAR (FAIE REQUIREMENT 4) -->
+      <!-- SEARCH & FILTER TOOLBAR (FAIE Requirement 4) -->
       <div class="bg-white p-4 rounded-2xl border border-parchment-200 shadow-sm space-y-3">
         <div class="flex flex-col sm:flex-row gap-2.5">
-          <!-- Search input -->
+          <!-- Search Box -->
           <div class="relative flex-1">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5"></i>
             <input 
               type="text" 
               id="search-input" 
-              placeholder="Search pathways by name..." 
-              class="w-full bg-parchment-50 border border-parchment-300 rounded-xl pl-10 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-moss/40 transition"
+              placeholder="Search tasks by title..." 
+              class="w-full bg-parchment-50 border border-parchment-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-moss/40"
             />
           </div>
           <!-- Status Filters -->
           <div class="flex bg-parchment-100 p-1 rounded-xl border border-parchment-200">
-            <button data-status="All" class="status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800 transition">All</button>
-            <button data-status="Active" class="status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">Active</button>
-            <button data-status="Completed" class="status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">Completed</button>
+            <button type="button" data-filter="All" class="filter-status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg bg-white shadow-xs text-slate-800 transition">All</button>
+            <button type="button" data-filter="Active" class="filter-status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">Active</button>
+            <button type="button" data-filter="Completed" class="filter-status-btn flex-1 sm:flex-none px-3 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">Completed</button>
           </div>
           <!-- Priority Filter -->
           <select 
-            id="filter-priority" 
-            class="bg-parchment-50 border border-parchment-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-moss/40"
+            id="filter-priority-select" 
+            class="bg-parchment-50 border border-parchment-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none"
           >
             <option value="All">All Priorities</option>
-            <option value="High">High Priority</option>
-            <option value="Medium">Medium Priority</option>
-            <option value="Low">Low Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
           </select>
         </div>
       </div>
 
-      <!-- TASK LIST FEED (FAIE REQUIREMENT 2) -->
+      <!-- TASK LIST (FAIE Requirement 2) -->
       <div class="space-y-2">
         <div class="flex items-center justify-between px-1 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <span>Active Journey Pathways</span>
-          <span id="filtered-count">0 items</span>
+          <span>Task Feed</span>
+          <span id="task-count-indicator">0 tasks</span>
         </div>
         <ul id="task-list" class="space-y-2.5">
-          <!-- Dynamic Task Items -->
+          <!-- Dynamically populated tasks -->
         </ul>
       </div>
 
     </section>
 
-    <!-- RIGHT PANEL: NARRATIVE VIGNETTE CANVAS & BIOME TRACKER (5 COLUMNS) -->
+    <!-- RIGHT PANEL: DYNAMIC CANVAS & BIOME VIEWPORT (5 COLUMNS) -->
     <section class="lg:col-span-5 space-y-4 lg:sticky lg:top-20">
       <div class="bg-white rounded-3xl border border-parchment-200 overflow-hidden shadow-md">
-        
-        <!-- BIOME HEADER -->
-        <div class="p-4 bg-gradient-to-r from-twilight-900 to-twilight-800 text-white flex items-center justify-between">
+        <div class="p-4 bg-twilight-900 text-white flex items-center justify-between">
           <div>
             <span id="biome-chapter" class="text-[10px] uppercase font-extrabold tracking-widest text-amber-400">Chapter I</span>
             <h3 id="biome-name" class="text-sm font-bold text-slate-100">The Whispering Woods</h3>
@@ -227,84 +189,60 @@
           </div>
         </div>
 
-        <!-- DYNAMIC CANVAS VIEWPORT -->
-        <div class="relative w-full h-80 bg-slate-900 overflow-hidden canvas-vignette">
+        <div class="relative w-full h-80 bg-slate-900 overflow-hidden">
           <canvas id="world-canvas" class="w-full h-full block"></canvas>
-          
-          <!-- ATMOSPHERIC FOG OVERLAY -->
-          <div id="fog-overlay" class="absolute inset-0 fog-layer pointer-events-none opacity-20 flex items-center justify-center p-6 text-center">
-            <div id="fog-notice" class="bg-slate-900/80 text-slate-200 border border-slate-700/80 px-4 py-2 rounded-xl text-xs max-w-xs shadow-lg hidden">
-              <span class="font-bold text-amber-300 block mb-0.5">The Mist Gathers</span>
-              Unresolved tasks cast haze over the horizon. Clear a small pathway to guide the child forward.
-            </div>
-          </div>
-
-          <!-- BIOME PROMPT BADGE -->
-          <div class="absolute bottom-3 left-3 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-[11px] text-slate-200 flex items-center gap-2">
+          <div id="fog-overlay" class="absolute inset-0 fog-layer pointer-events-none opacity-20"></div>
+          <div class="absolute bottom-3 left-3 bg-black/50 backdrop-blur-xs px-3 py-1.5 rounded-xl text-[11px] text-slate-200 flex items-center gap-2">
             <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span id="biome-status-text">Waiting to take the first step together...</span>
+            <span id="biome-status-text">Child is quietly marching forward...</span>
           </div>
         </div>
 
-        <!-- PROGRESS BAR TOWARDS NEXT HOME CHAPTER -->
         <div class="p-4 space-y-2 bg-slate-50 border-t border-parchment-200">
           <div class="flex justify-between text-xs font-semibold text-slate-600">
-            <span>Chapter Completion</span>
+            <span>Chapter Progress</span>
             <span id="chapter-percent">0%</span>
           </div>
           <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-            <div id="chapter-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-700 rounded-full" style="width: 0%"></div>
+            <div id="chapter-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
           </div>
-          <p class="text-[11px] text-slate-500 italic text-center pt-1" id="narrative-whisper">
-            "Listen closely to the leaves. Home is past the canopy."
-          </p>
-        </div>
-
-      </div>
-
-      <!-- COMPANION DIALOGUE BOX -->
-      <div class="bg-amber-50/70 border border-amber-200/80 p-4 rounded-2xl flex items-start gap-3">
-        <div class="w-8 h-8 rounded-full bg-amber-200/80 text-amber-800 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <i data-lucide="heart" class="w-4 h-4"></i>
-        </div>
-        <div>
-          <h4 class="text-xs font-bold text-amber-900">Wanderer's Spirit</h4>
-          <p class="text-xs text-amber-800/90 mt-0.5 leading-relaxed" id="companion-text">
-            "I am ready when you are. When you finish a task, we take steps toward home."
-          </p>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- FIRST-TIME INTRO MODAL -->
-  <div id="intro-modal" class="fixed inset-0 bg-slate-900/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 md:p-8 border border-parchment-300 shadow-2xl space-y-5 text-center">
-      <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto border-2 border-amber-200">
-        <i data-lucide="sun" class="w-8 h-8"></i>
+  <!-- EDIT TASK MODAL (FAIE Requirement 2) -->
+  <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-parchment-300 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-4 h-4 text-moss"></i> Edit Task
+        </h3>
+        <button id="close-edit-modal" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <div class="space-y-2">
-        <h3 class="text-xl font-bold text-slate-900">"Hello... Can you hear me?"</h3>
-        <p class="text-sm text-slate-600 leading-relaxed">
-          I got separated from my family at the border of the Whispering Woods. The path forward is shrouded in mist, and my lantern flickers.
-        </p>
-        <p class="text-sm font-semibold text-moss-dark bg-moss/10 p-3 rounded-2xl border border-moss/20">
-          Every task you accomplish in your day clears the fog and gives me steps to walk forward.
-        </p>
-        <p class="text-xs text-slate-500 italic pt-1">
-          Will you help me find my way back home?
-        </p>
+      <input type="hidden" id="edit-task-id" />
+      <div>
+        <label class="text-xs font-bold text-slate-600 block mb-1">Task Title</label>
+        <input type="text" id="edit-task-title" class="w-full bg-parchment-50 border border-parchment-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-moss/40" />
       </div>
-      <button id="accept-quest-btn" class="w-full py-3 px-5 bg-moss hover:bg-moss-dark text-white font-bold rounded-2xl text-sm transition shadow-md flex items-center justify-center gap-2">
-        <i data-lucide="compass" class="w-4 h-4"></i>
-        <span>I'll help you. Let's begin</span>
-      </button>
+      <div>
+        <label class="text-xs font-bold text-slate-600 block mb-1">Priority</label>
+        <select id="edit-task-priority" class="w-full bg-parchment-50 border border-parchment-300 rounded-xl p-2.5 text-xs text-slate-700 font-semibold focus:outline-none">
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="cancel-edit-btn" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Cancel</button>
+        <button id="save-edit-btn" class="px-4 py-2 text-xs font-bold text-white bg-moss hover:bg-moss-dark rounded-xl transition shadow-xs">Save Changes</button>
+      </div>
     </div>
   </div>
 
-  <!-- JOURNAL / DIARY MODAL -->
-  <div id="journal-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <!-- JOURNAL MODAL -->
+  <div id="journal-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 border border-parchment-300 shadow-2xl space-y-4 max-h-[80vh] flex flex-col">
       <div class="flex items-center justify-between border-b border-parchment-200 pb-3">
         <div class="flex items-center gap-2">
@@ -313,61 +251,20 @@
         </div>
         <button id="close-journal" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <div id="journal-entries-container" class="space-y-3 overflow-y-auto flex-1 pr-1">
-        <!-- Entries rendered here -->
-      </div>
+      <div id="journal-entries-container" class="space-y-3 overflow-y-auto flex-1 pr-1"></div>
       <div class="text-right pt-2">
-        <button id="confirm-journal" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs px-4 py-2 rounded-xl">Keep Walking</button>
+        <button id="confirm-journal" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs px-4 py-2 rounded-xl">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- EDIT TASK MODAL (FAIE REQUIREMENT 2) -->
-  <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-parchment-300 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-          <i data-lucide="edit-3" class="w-4 h-4 text-moss"></i> Adjust Pathway
-        </h3>
-        <button id="close-edit-modal" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <input type="hidden" id="edit-task-id" />
-      <div>
-        <label class="text-xs font-bold text-slate-600 block mb-1">Pathway Title</label>
-        <input type="text" id="edit-task-title" class="w-full bg-parchment-50 border border-parchment-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-moss/40" />
-      </div>
-      <div>
-        <label class="text-xs font-bold text-slate-600 block mb-1">Expedition Priority</label>
-        <select id="edit-task-priority" class="w-full bg-parchment-50 border border-parchment-300 rounded-xl p-2.5 text-xs text-slate-700 font-semibold focus:outline-none">
-          <option value="High">High (Milestone - 25 Steps)</option>
-          <option value="Medium">Medium (Routine - 15 Steps)</option>
-          <option value="Low">Low (Quick Light - 5 Steps)</option>
-        </select>
-      </div>
-      <div class="flex justify-end gap-2 pt-2">
-        <button id="cancel-edit-btn" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Cancel</button>
-        <button id="save-edit-btn" class="px-4 py-2 text-xs font-bold text-white bg-moss hover:bg-moss-dark rounded-xl transition shadow-sm">Save Changes</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST FEEDBACK -->
-  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-slate-100 px-4 py-2.5 rounded-2xl shadow-xl text-xs flex items-center gap-2 border border-slate-700 opacity-0 translate-y-8 transition-all duration-300 pointer-events-none z-50">
-    <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-    <span id="toast-text">Notification</span>
-  </div>
-
-  <!-- APPLICATION CODE -->
+  <!-- JAVASCRIPT APPLICATION CORE -->
   <script>
-    // --- STORAGE KEYS & INITIAL CLEAN STATE ---
-    const STORAGE_KEY_TASKS = 'little_steps_home_clean_tasks';
-    const STORAGE_KEY_JOURNEY = 'little_steps_home_clean_journey';
-    const STORAGE_KEY_ONBOARDED = 'little_steps_home_onboarded_v1';
+    const STORAGE_KEY_TASKS = 'focuslist_tasks_v3';
+    const STORAGE_KEY_JOURNEY = 'focuslist_journey_v3';
 
-    // Fresh empty task state (No mock data)
+    // Standard state
     let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY_TASKS)) || [];
-
-    // Fresh expedition state starting at 0
     let journey = JSON.parse(localStorage.getItem(STORAGE_KEY_JOURNEY)) || {
       steps: 0,
       currentBiomeIdx: 0,
@@ -385,17 +282,17 @@
     let currentFilterPriority = 'All';
     let searchQuery = '';
 
-    // --- DOM REFERENCES ---
+    // DOM selectors
     const taskForm = document.getElementById('task-form');
-    const taskTitleInput = document.getElementById('task-title');
-    const taskPriorityInput = document.getElementById('task-priority');
+    const taskTitleInput = document.getElementById('task-title-input');
+    const taskPrioritySelect = document.getElementById('task-priority-select');
     const taskList = document.getElementById('task-list');
     const searchInput = document.getElementById('search-input');
-    const filterPrioritySelect = document.getElementById('filter-priority');
-    const statusBtns = document.querySelectorAll('.status-btn');
-    const filteredCountText = document.getElementById('filtered-count');
+    const filterPrioritySelect = document.getElementById('filter-priority-select');
+    const filterStatusBtns = document.querySelectorAll('.filter-status-btn');
+    const taskCountIndicator = document.getElementById('task-count-indicator');
 
-    // Stats
+    // Stats Selectors
     const statTotal = document.getElementById('stat-total');
     const statPending = document.getElementById('stat-pending');
     const statCompleted = document.getElementById('stat-completed');
@@ -407,25 +304,13 @@
     const canvas = document.getElementById('world-canvas');
     const ctx = canvas.getContext('2d');
     const fogOverlay = document.getElementById('fog-overlay');
-    const fogNotice = document.getElementById('fog-notice');
     const biomeChapter = document.getElementById('biome-chapter');
     const biomeName = document.getElementById('biome-name');
     const biomeRemaining = document.getElementById('biome-remaining');
     const chapterProgressBar = document.getElementById('chapter-progress-bar');
     const chapterPercent = document.getElementById('chapter-percent');
-    const narrativeWhisper = document.getElementById('narrative-whisper');
-    const companionText = document.getElementById('companion-text');
 
-    // Modals
-    const introModal = document.getElementById('intro-modal');
-    const acceptQuestBtn = document.getElementById('accept-quest-btn');
-
-    const journalModal = document.getElementById('journal-modal');
-    const openJournalBtn = document.getElementById('open-journal-btn');
-    const closeJournalBtn = document.getElementById('close-journal');
-    const confirmJournalBtn = document.getElementById('confirm-journal');
-    const journalEntriesContainer = document.getElementById('journal-entries-container');
-
+    // Edit Modal
     const editModal = document.getElementById('edit-modal');
     const editTaskId = document.getElementById('edit-task-id');
     const editTaskTitle = document.getElementById('edit-task-title');
@@ -434,78 +319,34 @@
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const closeEditModalBtn = document.getElementById('close-edit-modal');
 
-    // --- CHECK ONBOARDING / INTRO ---
-    function checkFirstTimeUser() {
-      const onboarded = localStorage.getItem(STORAGE_KEY_ONBOARDED);
-      if (onboarded) {
-        introModal.classList.add('hidden');
-      } else {
-        introModal.classList.remove('hidden');
-      }
-    }
+    // Journal Modal
+    const journalModal = document.getElementById('journal-modal');
+    const openJournalBtn = document.getElementById('open-journal-btn');
+    const closeJournalBtn = document.getElementById('close-journal');
+    const confirmJournalBtn = document.getElementById('confirm-journal');
+    const journalEntriesContainer = document.getElementById('journal-entries-container');
 
-    acceptQuestBtn.addEventListener('click', () => {
-      localStorage.setItem(STORAGE_KEY_ONBOARDED, 'true');
-      introModal.classList.add('hidden');
-      
-      // Seed first emotional journal reflection
-      if (journey.diaryEntries.length === 0) {
-        journey.diaryEntries.push({
-          id: 'd_first',
-          chapter: 'A New Companion',
-          text: 'Someone answered my call in the woods today. They promised to help guide me home with each step they take in their world. I feel warm again.',
-          timestamp: 'Journey Begun'
-        });
-        saveState();
-      }
-      notify('You agreed to guide the lost child home.');
-    });
-
-    // --- SAVE TO LOCALSTORAGE ---
     function saveState() {
       localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(tasks));
       localStorage.setItem(STORAGE_KEY_JOURNEY, JSON.stringify(journey));
-      updateMetrics();
+      updateStats();
     }
 
-    // --- TOAST NOTIFICATIONS ---
-    function notify(text) {
-      const toast = document.getElementById('toast');
-      const toastText = document.getElementById('toast-text');
-      toastText.textContent = text;
-      toast.classList.remove('opacity-0', 'translate-y-8');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-8');
-      }, 2600);
-    }
-
-    // --- METRICS & BIOME ENGINE ---
-    function updateMetrics() {
+    function updateStats() {
       const total = tasks.length;
       const completed = tasks.filter(t => t.completed).length;
       const pending = total - completed;
 
       statTotal.textContent = total;
-      statCompleted.textContent = completed;
       statPending.textContent = pending;
+      statCompleted.textContent = completed;
 
       valSteps.textContent = journey.steps;
       valJournalCount.textContent = journey.diaryEntries.length;
 
-      // Anti-Procrastination Fog Logic
+      // Anti-procrastination fog density
       const fogDensity = total === 0 ? 0.2 : Math.min(0.85, 0.15 + (pending * 0.16));
       fogOverlay.style.opacity = fogDensity;
-
-      if (pending >= 3) {
-        fogNotice.classList.remove('hidden');
-        companionText.textContent = '"The air is thick with mist. If we solve just one small matter, the sun will pierce through."';
-      } else if (total === 0) {
-        fogNotice.classList.add('hidden');
-        companionText.textContent = '"I am resting by the lantern. Add a task to start charting our steps."';
-      } else {
-        fogNotice.classList.add('hidden');
-        companionText.textContent = '"With each task you complete in your world, our path grows clearer. We are steady on our way."';
-      }
 
       const lanternPct = Math.max(20, Math.min(100, 100 - (pending * 10)));
       valLantern.textContent = `${lanternPct}%`;
@@ -531,15 +372,9 @@
       chapterProgressBar.style.width = `${pct}%`;
       chapterPercent.textContent = `${pct}%`;
       biomeRemaining.textContent = `${Math.max(0, activeBiome.targetSteps - journey.steps)} steps to border`;
-
-      if (pct >= 100 && bIdx === BIOMES.length - 1) {
-        narrativeWhisper.textContent = '"The familiar gate is in sight. You brought the child safely home."';
-      } else {
-        narrativeWhisper.textContent = `Travelling across ${activeBiome.name}.`;
-      }
     }
 
-    // --- CREATE TASK ---
+    // CREATE TASK
     taskForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const title = taskTitleInput.value.trim();
@@ -548,7 +383,7 @@
       const newTask = {
         id: 'task_' + Date.now(),
         title: title,
-        priority: taskPriorityInput.value,
+        priority: taskPrioritySelect.value,
         completed: false,
         createdAt: Date.now()
       };
@@ -557,57 +392,45 @@
       saveState();
       renderTasks();
       taskTitleInput.value = '';
-      notify('New pathway marked on your map.');
     });
 
-    // --- TOGGLE COMPLETION ---
-    window.toggleTask = function(id) {
+    // TOGGLE TASK STATUS (Checkbox standard hook)
+    window.handleToggleTask = function(id, isChecked) {
       const task = tasks.find(t => t.id === id);
       if (!task) return;
 
-      task.completed = !task.completed;
+      task.completed = isChecked;
 
       const stepGains = { High: 25, Medium: 15, Low: 5 };
       const delta = stepGains[task.priority] || 10;
 
       if (task.completed) {
         journey.steps += delta;
-        notify(`Pathway cleared! +${delta} footsteps walked.`);
-        
         if (task.priority === 'High') {
-          triggerNewDiaryEntry(task.title);
+          journey.diaryEntries.unshift({
+            id: 'd_' + Date.now(),
+            chapter: `Note #${journey.diaryEntries.length + 1}`,
+            text: `We reached a high milestone ("${task.title}"). The road feels lighter today.`,
+            timestamp: 'Just now'
+          });
         }
       } else {
         journey.steps = Math.max(0, journey.steps - delta);
-        notify(`Pathway re-opened. Footsteps adjusted.`);
       }
 
       saveState();
       renderTasks();
     };
 
-    function triggerNewDiaryEntry(taskTitle) {
-      const entryCount = journey.diaryEntries.length + 1;
-      const newEntry = {
-        id: 'd_' + Date.now(),
-        chapter: `Chapter Note #${entryCount}`,
-        text: `Today we conquered an intimidating pass ("${taskTitle}"). The sky opened up, and the path smelled like pine and damp earth. I feel much closer to family now.`,
-        timestamp: 'Just now'
-      };
-      journey.diaryEntries.unshift(newEntry);
-      notify('New Diary Entry written by the wanderer!');
-    }
-
-    // --- DELETE TASK ---
-    window.deleteTask = function(id) {
+    // DELETE TASK
+    window.handleDeleteTask = function(id) {
       tasks = tasks.filter(t => t.id !== id);
       saveState();
       renderTasks();
-      notify('Pathway erased from the map.');
     };
 
-    // --- EDIT TASK ---
-    window.openEditModal = function(id) {
+    // EDIT TASK
+    window.handleOpenEdit = function(id) {
       const task = tasks.find(t => t.id === id);
       if (!task) return;
 
@@ -616,10 +439,6 @@
       editTaskPriority.value = task.priority;
       editModal.classList.remove('hidden');
     };
-
-    function closeEditModal() {
-      editModal.classList.add('hidden');
-    }
 
     saveEditBtn.addEventListener('click', () => {
       const id = editTaskId.value;
@@ -634,29 +453,28 @@
         task.priority = priority;
         saveState();
         renderTasks();
-        closeEditModal();
-        notify('Pathway updated.');
+        editModal.classList.add('hidden');
       }
     });
 
-    cancelEditBtn.addEventListener('click', closeEditModal);
-    closeEditModalBtn.addEventListener('click', closeEditModal);
+    cancelEditBtn.addEventListener('click', () => editModal.classList.add('hidden'));
+    closeEditModalBtn.addEventListener('click', () => editModal.classList.add('hidden'));
 
-    // --- SEARCH AND FILTERS ---
+    // SEARCH & FILTERS
     searchInput.addEventListener('input', (e) => {
       searchQuery = e.target.value.toLowerCase();
       renderTasks();
     });
 
-    statusBtns.forEach(btn => {
+    filterStatusBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        statusBtns.forEach(b => {
-          b.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
+        filterStatusBtns.forEach(b => {
+          b.classList.remove('bg-white', 'text-slate-800', 'shadow-xs');
           b.classList.add('text-slate-500');
         });
-        btn.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
+        btn.classList.add('bg-white', 'text-slate-800', 'shadow-xs');
         btn.classList.remove('text-slate-500');
-        currentFilterStatus = btn.getAttribute('data-status');
+        currentFilterStatus = btn.getAttribute('data-filter');
         renderTasks();
       });
     });
@@ -666,7 +484,7 @@
       renderTasks();
     });
 
-    // --- RENDER TASK FEED ---
+    // RENDER FUNCTION
     function renderTasks() {
       taskList.innerHTML = '';
 
@@ -685,14 +503,12 @@
         return matchesStatus && matchesPriority && matchesSearch;
       });
 
-      filteredCountText.textContent = `${filtered.length} of ${tasks.length} pathways`;
+      taskCountIndicator.textContent = `${filtered.length} of ${tasks.length} tasks`;
 
       if (filtered.length === 0) {
         taskList.innerHTML = `
           <li class="p-8 text-center bg-white border border-dashed border-parchment-300 rounded-2xl text-slate-400">
-            <i data-lucide="compass" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
-            <p class="text-sm font-semibold text-slate-600">No pathways mapped yet.</p>
-            <p class="text-xs text-slate-400 mt-1">Carve your first pathway above to help guide the child forward.</p>
+            <p class="text-sm font-semibold text-slate-600">No tasks match your filters.</p>
           </li>
         `;
         lucide.createIcons();
@@ -715,14 +531,13 @@
 
         li.innerHTML = `
           <div class="flex items-center gap-3.5 flex-1 min-w-0">
-            <button 
-              onclick="toggleTask('${task.id}')"
-              class="w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition ${
-                task.completed ? 'bg-moss border-moss text-white' : 'border-slate-300 hover:border-moss bg-parchment-50'
-              }"
-            >
-              ${task.completed ? '<i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>' : ''}
-            </button>
+            <!-- Standard Semantic Checkbox for FAIE Evaluator -->
+            <input 
+              type="checkbox" 
+              ${task.completed ? 'checked' : ''} 
+              onchange="handleToggleTask('${task.id}', this.checked)"
+              class="w-5 h-5 rounded text-moss focus:ring-moss border-slate-300 cursor-pointer flex-shrink-0"
+            />
 
             <div class="flex flex-col truncate">
               <span class="text-sm font-bold tracking-tight truncate ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}">
@@ -732,25 +547,22 @@
                 <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md ${priorityBadges}">
                   ${task.priority} Priority
                 </span>
-                <span class="text-[10px] text-slate-400 font-medium">
-                  ${task.priority === 'High' ? '+25 Steps' : task.priority === 'Medium' ? '+15 Steps' : '+5 Steps'}
-                </span>
               </div>
             </div>
           </div>
 
           <div class="flex items-center gap-1 flex-shrink-0">
             <button 
-              onclick="openEditModal('${task.id}')" 
+              onclick="handleOpenEdit('${task.id}')" 
               class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition"
-              title="Edit Pathway"
+              title="Edit Task"
             >
               <i data-lucide="pencil" class="w-4 h-4"></i>
             </button>
             <button 
-              onclick="deleteTask('${task.id}')" 
+              onclick="handleDeleteTask('${task.id}')" 
               class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
-              title="Remove Pathway"
+              title="Delete Task"
             >
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
@@ -762,22 +574,18 @@
       lucide.createIcons();
     }
 
-    // --- JOURNAL DIALOGUE LOGIC ---
-    openJournalBtn.addEventListener('click', renderJournalModal);
-    closeJournalBtn.addEventListener('click', () => journalModal.classList.add('hidden'));
-    confirmJournalBtn.addEventListener('click', () => journalModal.classList.add('hidden'));
-
-    function renderJournalModal() {
+    // JOURNAL
+    openJournalBtn.addEventListener('click', () => {
       journalEntriesContainer.innerHTML = '';
       if (journey.diaryEntries.length === 0) {
-        journalEntriesContainer.innerHTML = '<p class="text-xs text-slate-400 italic text-center p-4">No entries recorded yet. Complete High Priority tasks to unlock reflections.</p>';
+        journalEntriesContainer.innerHTML = '<p class="text-xs text-slate-400 italic text-center p-4">No reflections recorded yet. Complete High Priority tasks to unlock entries.</p>';
       } else {
         journey.diaryEntries.forEach(entry => {
           const item = document.createElement('div');
           item.className = 'p-3.5 bg-parchment-50 border border-parchment-200 rounded-2xl';
           item.innerHTML = `
             <div class="flex justify-between items-center mb-1">
-              <span class="text-xs font-bold text-moss-dark">${escapeHTML(entry.chapter)}</span>
+              <span class="text-xs font-bold text-moss">${escapeHTML(entry.chapter)}</span>
               <span class="text-[10px] text-slate-400 font-medium">${entry.timestamp}</span>
             </div>
             <p class="text-xs text-slate-700 leading-relaxed font-serif italic">${escapeHTML(entry.text)}</p>
@@ -786,9 +594,12 @@
         });
       }
       journalModal.classList.remove('hidden');
-    }
+    });
 
-    // --- PROCEDURAL 2D CANVAS VIGNETTE ---
+    closeJournalBtn.addEventListener('click', () => journalModal.classList.add('hidden'));
+    confirmJournalBtn.addEventListener('click', () => journalModal.classList.add('hidden'));
+
+    // PROCEDURAL 2D CANVAS VIGNETTE
     function setupCanvas() {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -799,8 +610,7 @@
 
     let walkCycle = 0;
     let particles = [];
-
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 20; i++) {
       particles.push({
         x: Math.random() * 400,
         y: Math.random() * 320,
@@ -817,14 +627,14 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      // Sky Gradient
+      // Sky
       const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
       skyGrad.addColorStop(0, activeBiome.skyColor);
       skyGrad.addColorStop(1, '#0f172a');
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Distant Hills
+      // Hills
       ctx.fillStyle = activeBiome.treeColor;
       ctx.beginPath();
       ctx.moveTo(0, height - 90);
@@ -835,7 +645,7 @@
       ctx.closePath();
       ctx.fill();
 
-      // Ground Path
+      // Ground
       ctx.fillStyle = activeBiome.groundColor;
       ctx.beginPath();
       ctx.moveTo(0, height - 60);
@@ -845,7 +655,7 @@
       ctx.closePath();
       ctx.fill();
 
-      // Floating Spores
+      // Particles
       particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
@@ -861,7 +671,7 @@
         ctx.globalAlpha = 1.0;
       });
 
-      // Child Silhouette & Lantern
+      // Child Silhouette
       walkCycle += 0.05;
       const childX = width * 0.38;
       const childY = height - 75 + Math.sin(walkCycle * 2) * 2;
@@ -875,7 +685,7 @@
       ctx.arc(childX + 16, childY + 2, 45, 0, Math.PI * 2);
       ctx.fill();
 
-      // Cloak
+      // Body & Head
       ctx.fillStyle = '#f8fafc';
       ctx.beginPath();
       ctx.moveTo(childX - 6, childY + 18);
@@ -885,12 +695,11 @@
       ctx.closePath();
       ctx.fill();
 
-      // Head
       ctx.beginPath();
       ctx.arc(childX, childY - 3, 5.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Staff
+      // Lantern
       ctx.strokeStyle = '#d97706';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -898,14 +707,12 @@
       ctx.lineTo(childX + 14, childY - 4);
       ctx.stroke();
 
-      // Lantern
       ctx.fillStyle = '#fbbf24';
       ctx.fillRect(childX + 13, childY, 4, 6);
 
       requestAnimationFrame(renderCanvasScene);
     }
 
-    // Escape HTML to prevent injection
     function escapeHTML(str) {
       return str.replace(/[&<>'"]/g, 
         tag => ({
@@ -918,12 +725,10 @@
       );
     }
 
-    // --- INIT ---
     window.addEventListener('resize', setupCanvas);
     window.addEventListener('DOMContentLoaded', () => {
-      checkFirstTimeUser();
       setupCanvas();
-      updateMetrics();
+      updateStats();
       renderTasks();
       requestAnimationFrame(renderCanvasScene);
     });
